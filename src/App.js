@@ -8,6 +8,7 @@ import { store } from "./redux/store";
 
 import 'react-toastify/dist/ReactToastify.css';
 import { useState } from "react";
+import ProductDetail from "./pages/ProductDetail";
 
 function App() {
   return (
@@ -16,9 +17,9 @@ function App() {
       <Routes>
         <Route path="/" exact element={<MainLayout />}>
           <Route exact index element={<Home />} />
+          <Route path="/product-detail" element={<ProductDetail/>}/>
           <Route path="/sign-in" element={<SignIn/>}/>
           <Route path="/sign-up" element={<SignUp/>}/>
-
         </Route>
       </Routes>
     </BrowserRouter>

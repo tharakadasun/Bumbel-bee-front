@@ -1,59 +1,39 @@
 import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import ItemCard from "../components/card/ItemCard";
+import { productFetch } from "../redux/product/productSlice";
 
 function Home() {
+  const dispatch = useDispatch();
+  const {loading,products} = useSelector((state) => state.products);
+  console.log(products);
   useEffect(() => {
-    // window.location.reload();
-  }, []);
+    dispatch(productFetch())
+  }, [dispatch]);
   return (
     <div className="container-md py-4">
       <div className="row row-cols-1 row-cols-md-4 g-4">
-        <div className="col">
-          <div className="card h-100">
-            <img src="https://static-01.daraz.lk/p/31191404dc06cd37d4adbc9871a9f612.jpg" className="card-img-top" alt="..." />
-            <div className="card-body">
-              <h5 className="card-title">Card title</h5>
-              <p className="card-text">
-                This is a longer card with supporting text below as a natural
-                lead-in to additional content. This content is a little bit
-                longer.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="col">
-          <div className="card h-100">
-            <img src="https://static-01.daraz.lk/p/31191404dc06cd37d4adbc9871a9f612.jpg" className="card-img-top" alt="..." />
-            <div className="card-body">
-              <h5 className="card-title">Card title</h5>
-              <p className="card-text">This is a short card.</p>
-            </div>
-          </div>
-        </div>
-        <div className="col">
-          <div className="card h-100">
-            <img src="https://static-01.daraz.lk/p/31191404dc06cd37d4adbc9871a9f612.jpg" className="card-img-top" alt="..." />
-            <div className="card-body">
-              <h5 className="card-title">Card title</h5>
-              <p className="card-text">
-                This is a longer card with supporting text below as a natural
-                lead-in to additional content.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="col">
-          <div className="card h-100">
-            <img src="https://static-01.daraz.lk/p/31191404dc06cd37d4adbc9871a9f612.jpg" className="card-img-top" alt="..." />
-            <div className="card-body">
-              <h5 className="card-title">Card title</h5>
-              <p className="card-text">
-                This is a longer card with supporting text below as a natural
-                lead-in to additional content. This content is a little bit
-                longer.
-              </p>
-            </div>
-          </div>
-        </div>
+        {loading ? (
+          <>
+            <p>Product Not Found</p>
+          </>
+        ) : (
+          <>
+            {products != null ? (
+              <>
+                {products.map((item,index) => {
+                  return (
+                      <div key={index} className="col" >
+                        <ItemCard {...item}/>
+                      </div>
+                  );
+                })}
+              </>
+            ) : (
+              <></>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

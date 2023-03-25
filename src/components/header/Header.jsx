@@ -5,6 +5,7 @@ import jwt_decode from "jwt-decode";
 import { useDispatch } from "react-redux";
 import { logout, logoutUser } from "../../redux/auth/authSlice";
 import { useNavigate } from "react-router-dom";
+import {AiOutlineShoppingCart} from 'react-icons/ai';
 
 function isTokenExpired(token) {
   const decodedToken = jwt_decode(token);
@@ -12,36 +13,41 @@ function isTokenExpired(token) {
   const currentTime = new Date().getTime();
   return expirationTime < currentTime;
 }
-function Header({userLogin,setUserLogin}) {
+function Header({ userLogin, setUserLogin }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const handleLogourHandler = () =>{
+  const handleLogourHandler = () => {
     dispatch(logoutUser);
     localStorage.clear();
-    navigate("/")
+    navigate("/");
     setUserLogin(false);
-  }
+  };
   const [user, setUser] = useState("");
   useEffect(() => {
     const token_local = localStorage.getItem("token");
     const user_local = localStorage.getItem("user");
-    if(user_local != null){
+    if (user_local != null) {
       setUser(user_local);
     }
-    if(token_local != null){
+    if (token_local != null) {
       if (isTokenExpired(token_local)) {
         localStorage.clear();
         setUserLogin(false);
       } else {
-        setUserLogin(true)
+        setUserLogin(true);
       }
     }
-  },[]);
+  }, []);
   return (
     <>
-      <nav className="navbar navbar-expand-lg" style={{backgroundColor:"rgb(44 109 168)"}}>
+      <nav
+        className="navbar navbar-expand-lg"
+        style={{ backgroundColor: "rgb(44 109 168)" }}
+      >
         <div className="container">
-          <a href="/" className="navbar-brand" style={{color:"white"}}>Shopping Center</a>
+          <a href="/" className="navbar-brand" style={{ color: "white" }}>
+            Shopping Center
+          </a>
           <button
             className="navbar-toggler"
             type="button"
@@ -55,6 +61,15 @@ function Header({userLogin,setUserLogin}) {
           </button>
           <div className="collapse navbar-collapse" id="navbarScroll">
             <form className="d-flex w-100 justify-content-end" role="search">
+              <a
+                className="btn btn-primary mx-2"
+                data-bs-toggle="offcanvas"
+                href="#offcanvasExample"
+                role="button"
+                aria-controls="offcanvasExample"
+              >
+                <AiOutlineShoppingCart/>
+              </a>
               <div className="dropdown">
                 <button
                   className="btn btn-secondary dropdown-toggle"
@@ -62,12 +77,19 @@ function Header({userLogin,setUserLogin}) {
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  {userLogin ? <>{user? <>{user}</>:<>NaN</>}</>:<BiUserCircle />}
+                  {userLogin ? (
+                    <>{user ? <>{user}</> : <>NaN</>}</>
+                  ) : (
+                    <BiUserCircle />
+                  )}
                 </button>
                 <ul className="dropdown-menu">
                   {userLogin ? (
                     <>
-                      <a className="dropdown-item" onClick={handleLogourHandler}>
+                      <a
+                        className="dropdown-item"
+                        onClick={handleLogourHandler}
+                      >
                         Logout
                       </a>
                     </>
